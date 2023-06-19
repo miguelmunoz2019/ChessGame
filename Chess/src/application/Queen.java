@@ -1,9 +1,12 @@
 package application;
 
+import application.FrontBoard.Action;
+import javafx.scene.layout.GridPane;
+
 public class Queen extends Piece{
 
-	public Queen(String color, int posLine, int posColumn, int pRatio) {
-		super(color, posLine, posColumn, pRatio);
+	public Queen(String color, int posLine, int posColumn, int pRatio,  FrontBoard pBoard) {
+		super(color, posLine, posColumn, pRatio, pBoard);
 		this.type="Queen";
 		setPieceImage();
 		this.setFitHeight(pRatio);
@@ -12,8 +15,17 @@ public class Queen extends Piece{
 	}
 
 	@Override
-	public boolean checkMove() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean checkMove(Action action, Square pastSquare, Square currentSquare) {
+		switch (action){
+		case PIECETOPIECE:
+			
+			break;
+		case PIECETOSQUARE:
+			break;
+
+		}
+
+		return true;
+
 	}
 }

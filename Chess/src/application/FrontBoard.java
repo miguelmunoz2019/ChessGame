@@ -58,7 +58,6 @@ public class FrontBoard  {
 			for(int j=0 ; j< filas; j++)
 			{
 				Square r = new Square(i, j, false, "White");
-				r.setIdentifier("Square;"+i+";"+j);
 				r.setPrefHeight(ratio);
 				r.setPrefWidth(ratio);
 				if((i+j)%2==0)
@@ -91,63 +90,64 @@ public class FrontBoard  {
 			case 0:
 				switch (casilla.getColumn()) {
 				case 0:
-					addPiece(casilla, new Rook("White", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Rook("White", casilla.getLine(), casilla.getColumn(), ratio, this));
+
 					break;
 				case 1:
-					addPiece(casilla, new Knight("White", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Knight("White", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 2:
-					addPiece(casilla, new Bishop("White", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Bishop("White", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 3:
-					addPiece(casilla, new King("White", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new King("White", casilla.getLine(), casilla.getColumn(), ratio, this));
 					break;
 				case 4:
-					addPiece(casilla, new Queen("White", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Queen("White", casilla.getLine(), casilla.getColumn(), ratio, this));
 					break;
 				case 5:
-					addPiece(casilla, new Bishop("White", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Bishop("White", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 6:
-					addPiece(casilla, new Knight("White", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Knight("White", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 7:
-					addPiece(casilla, new Rook("White", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Rook("White", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				}
 				break;
 			case 1:
-				addPiece(casilla, new Pawn("White", casilla.getLine(), casilla.getColumn(), ratio));
+				addPiece(casilla, new Pawn("White", casilla.getLine(), casilla.getColumn(), ratio,this));
 				break;
 			case 6:
-				addPiece(casilla, new Pawn("Black", casilla.getLine(), casilla.getColumn(), ratio));
+				addPiece(casilla, new Pawn("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 
 				break;
 			case 7:
 				switch (casilla.getColumn()) {
 				case 0:
-					addPiece(casilla, new Rook("Black", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Rook("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 1:
-					addPiece(casilla, new Knight("Black", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Knight("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 2:
-					addPiece(casilla, new Bishop("Black", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Bishop("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 3:
-					addPiece(casilla, new King("Black", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new King("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 4:
-					addPiece(casilla, new Queen("Black", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Queen("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 5:
-					addPiece(casilla, new Bishop("Black", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Bishop("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 6:
-					addPiece(casilla, new Knight("Black", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Knight("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				case 7:
-					addPiece(casilla, new Rook("Black", casilla.getLine(), casilla.getColumn(), ratio));
+					addPiece(casilla, new Rook("Black", casilla.getLine(), casilla.getColumn(), ratio,this));
 					break;
 				}
 				break;
@@ -163,17 +163,13 @@ public class FrontBoard  {
 
 	}
 
-	private void movePiece()
+	private void movePiece(Square past, Square current)
 	{
 		System.out.println("move");
-		pastSquare.getChildren().clear();
-		currentSquare.getChildren().clear();
-		addPiece(currentSquare, pastPiece);
-		pastSquare=null;
-		pastPiece=null;
-		currentSquare=null;
-		currentPiece=null;
-
+		Piece Ppiece = (Piece)past.getChildren().get(0);
+		past.getChildren().clear();
+		current.getChildren().clear();
+		addPiece(current, Ppiece);
 
 	}
 
@@ -233,33 +229,43 @@ public class FrontBoard  {
 						if(currentSquare != null)
 						{
 							resetColor(currentSquare);
-							pastPiece= (Piece) currentSquare.getChildren().get(0);
+							if(!currentSquare.getChildren().isEmpty()) {
+								pastPiece= (Piece) currentSquare.getChildren().get(0);
+								currentPiece=null;
+							}
 						}
 						pastSquare=currentSquare;
 						currentSquare = (Square) target;
-						System.out.println(pastSquare);
-						System.out.println(currentSquare);
 						if (!currentSquare.getChildren().isEmpty()  ) {
 
 							currentPiece = (Piece) currentSquare.getChildren().get(0);
-							//Si el cuadro seleccionado contiene una pieza, se revisa el movimiento
+							//Si el cuadro seleccionado contiene una pieza del oponente, se revisa el movimiento
 							if(currentPiece.getColor().equals(playerSide) ) {
 								selectPiece(currentSquare);
 
 							}
 							else if(revisarMovimiento())
 							{
-								movePiece();
+								movePiece(pastSquare, currentSquare);
+								pastSquare=null;
+								pastPiece=null;
+								currentSquare=null;
+								currentPiece=null;
 							}
 						}
 						else {
-							currentSquare= null;
+							if(pastPiece!=null) {
+								if(revisarMovimiento())
+								{
+									movePiece(pastSquare, currentSquare);
+								}
+							}
 							currentPiece=null;
 						}
 					}
 					//Clicked on a piece
-					else {
-						System.out.println("piece clicked");
+					else if(target.toString().startsWith("Piece")){
+						System.out.println(target.toString());
 					}
 
 
@@ -279,6 +285,9 @@ public class FrontBoard  {
 		{
 			return esMovimientoValido(Action.PIECETOPIECE);
 		}
+		else if(pastPiece!=null && currentPiece == null) {
+			return esMovimientoValido(Action.PIECETOSQUARE);
+		}
 		return false;
 	}
 
@@ -287,18 +296,31 @@ public class FrontBoard  {
 		switch (pAction){
 		case PIECETOPIECE:
 			if(pastPiece.getColor()!= currentPiece.getColor()) {
-				if(pastPiece.checkMove()) {
+				if(pastPiece.checkMove(Action.PIECETOPIECE, pastSquare, currentSquare)) {
 					return true;
 				}
 			}
 			break;
 		case PIECETOSQUARE:
+			if(pastPiece.checkMove(Action.PIECETOSQUARE, pastSquare, currentSquare)) {
+				return true;
+			}
 			break;
 		}
 
 
 		return false;
 	}
+	public Square getSquare(String id)
+	{
+		for(Square square : squares) {
+			if(square.getIdentifier().equals(id))
+				return square;
+		}
+		return null;
+	}
+
+
 }
 
 

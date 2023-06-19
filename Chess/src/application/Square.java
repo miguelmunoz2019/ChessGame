@@ -15,11 +15,15 @@ public class Square extends StackPane {
 		this.posColumn = posColumn;
 		this.occupied = occupiedState;
 		this.color = color;
+		setIdentifier();
 	}
-
-	public void setIdentifier(String pid)
+	public String getIdentifier()
 	{
-		id= pid;
+		return id;
+	}
+	public void setIdentifier()
+	{
+		id= positionsToId(posColumn, posLine);
 	}
 
 	public void changeOccupation(boolean state)
@@ -51,6 +55,12 @@ public class Square extends StackPane {
 
 	public void setColor(String string) {
 		color=string;
+	}
+	private String positionsToId(int posColumn, int posLine) {
+		String alphabet = "abcdefgh";
+		String letra =alphabet.substring(7-posColumn, 8-posColumn);
+		String numero=""+(posLine+1);
+		return letra+numero;
 	}
 
 

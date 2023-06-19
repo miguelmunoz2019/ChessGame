@@ -1,6 +1,8 @@
 package application;
+import application.FrontBoard.Action;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 public abstract class Piece extends ImageView {
 
 	protected String color;
@@ -8,12 +10,14 @@ public abstract class Piece extends ImageView {
 	protected int posLine;
 	protected int posColumn;
 	protected int ratio;
+	protected FrontBoard chessBoard;
 
-	public Piece(String color, int posLine, int posColumn, int pRatio){
+	public Piece(String color, int posLine, int posColumn, int pRatio, FrontBoard pBoard){
 		this.color = color;
 		this.posLine = posLine;
 		this.posColumn = posColumn;
 		this.ratio=pRatio;
+		this.chessBoard=pBoard;
 	}
 
 	public void setPieceImage(){
@@ -35,7 +39,7 @@ public abstract class Piece extends ImageView {
 		this.setImage(image);
 	}
 	
-	public abstract boolean checkMove();
+	public abstract boolean checkMove(Action action, Square pastSquare, Square currentSquare);
 
 	@Override
 	public String toString() {

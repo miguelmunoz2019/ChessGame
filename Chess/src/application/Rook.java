@@ -1,8 +1,11 @@
 package application;
 
+import application.FrontBoard.Action;
+import javafx.scene.layout.GridPane;
+
 public class Rook extends Piece{
-	public Rook(String color, int posLine, int posColumn, int pRatio) {
-		super(color, posLine, posColumn, pRatio);
+	public Rook(String color, int posLine, int posColumn, int pRatio,  FrontBoard frontBoard) {
+		super(color, posLine, posColumn, pRatio, frontBoard);
 		this.type="Rook";
 		setPieceImage();
 		this.setFitHeight(pRatio);
@@ -11,9 +14,18 @@ public class Rook extends Piece{
 	}
 
 	@Override
-	public boolean checkMove() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean checkMove(Action action, Square pastSquare, Square currentSquare) {
+		switch (action){
+		case PIECETOPIECE:
+			
+			break;
+		case PIECETOSQUARE:
+			break;
+
+		}
+
+		return true;
+
 	}
 	
 }
