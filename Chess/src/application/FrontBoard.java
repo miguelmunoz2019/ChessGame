@@ -170,6 +170,14 @@ public class FrontBoard  {
 		past.getChildren().clear();
 		current.getChildren().clear();
 		addPiece(current, Ppiece);
+		if(Ppiece.getColor().equals("White"))
+		{
+			playerSide="Black";
+		}
+		else {
+			playerSide="White";
+		}
+		rotateBoard();
 
 	}
 
